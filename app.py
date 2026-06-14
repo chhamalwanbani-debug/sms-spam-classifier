@@ -8,9 +8,16 @@ from nltk.stem.porter import PorterStemmer
 
 warnings.filterwarnings('ignore')
 
-# Download NLTK data if not already present
-nltk.download('punkt', quiet=True)
-nltk.download('stopwords', quiet=True)
+# Download NLTK data to /tmp (guaranteed writable on Streamlit Cloud)
+import os
+NLTK_DATA_DIR = '/tmp/nltk_data'
+os.makedirs(NLTK_DATA_DIR, exist_ok=True)
+os.environ['NLTK_DATA'] = NLTK_DATA_DIR
+nltk.data.path.insert(0, NLTK_DATA_DIR)
+
+nltk.download('punkt', download_dir=NLTK_DATA_DIR)
+nltk.download('punkt_tab', download_dir=NLTK_DATA_DIR)
+nltk.download('stopwords', download_dir=NLTK_DATA_DIR)
 
 ps = PorterStemmer()
 stop_words = set(stopwords.words('english'))
